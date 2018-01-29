@@ -1,0 +1,24 @@
+
+ 1. Download and extract https://mybible.zone/dlbiblel.php?a=1216&b=1
+ 2. Export the verse data to a CSV file with the SQLite Database Browser (sudo apt-get install sqlitebrowser)
+ 3. Convert the CSV to XML with https://github.com/publishing-systems/automated_digital_publishing/tree/master/csv2xml/csv2xml2 and the config.xml
+
+        <?xml version="1.0" encoding="UTF-8"?>
+        <csv2xml2-config>
+          <delimiter>,</delimiter>
+          <ignore-first-line>true</ignore-first-line>
+          <root-tag-name>bible</root-tag-name>
+          <encapsulation-tag-name>verses</encapsulation-tag-name>
+          <row-tag-name>verse</row-tag-name>
+          <mapping>
+            <csv-column number="0" xml-tag-name="book-number"/>
+            <csv-column number="1" xml-tag-name="chapter-number"/>
+            <csv-column number="2" xml-tag-name="verse-number"/>
+            <csv-column number="3" xml-tag-name="text"/>
+          </mapping>
+        </csv2xml2-config>
+
+    It looks like csv2xml2 is still buggy, which is why it probably needs to be replaced. However, this method can work for certain chapters.
+ 4. Replace all &lt; with < and all &gt; with > in the result XML file.
+ 5. Clone https://github.com/publishing-systems/CppStAX/tree/718d7d520acb0ef325106c04e49a0298d5f89fb1 into a directory
+ 6. Copy $/cppstax.cpp into this directory, build the tool and run it on the XML file
